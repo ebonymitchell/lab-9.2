@@ -1,0 +1,164 @@
+
+/* Center the application and limit its width. */
+.app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+/* Main container for the character counter. */
+.character-counter {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+}
+
+.character-counter h1 {
+  margin-top: 0;
+  color: #243b65;
+  font-size: 2rem;
+}
+
+.character-counter > p {
+  color: #667085;
+}
+
+/* Arrange the input label above the textarea. */
+.text-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.text-input label {
+  font-weight: 600;
+}
+
+/* Make the textarea fill its container. */
+.text-input textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  resize: vertical;
+  line-height: 1.6;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Highlight the textarea when it receives keyboard focus. */
+.text-input textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Create a responsive grid for the statistics. */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Style each statistic as a separate card. */
+.stat-item {
+  padding: 1.25rem;
+  text-align: center;
+  background-color: #f0f4fa;
+  border-radius: 12px;
+  transition: transform 0.2s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-3px);
+}
+
+.stat-item h3 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #667085;
+}
+
+.stat-item p {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #243b65;
+  margin-bottom: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Separate the word goal section from the statistics. */
+.word-progress {
+  margin-top: 2rem;
+}
+
+.word-progress label {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+/* Use the native HTML progress element for accessibility. */
+.word-progress progress {
+  display: block;
+  width: 100%;
+  height: 16px;
+  accent-color: #2563eb;
+}
+
+.word-progress p {
+  font-size: 0.9rem;
+  color: #667085;
+}
+
+/* Style messages that report word goal progress. */
+.word-feedback {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background-color: #eff6ff;
+  color: #1e40af;
+}
+
+.word-feedback p {
+  margin: 0;
+}
+
+/* Highlight the reading time goal. */
+.reading-goal {
+  margin-top: 1.5rem;
+  font-weight: 600;
+}
+
+/* Stack statistics vertically on smaller screens. */
+@media (max-width: 600px) {
+  .app {
+    padding: 1rem;
+  }
+
+  .character-counter {
+    padding: 1.25rem;
+  }
+
+  .character-counter h1 {
+    font-size: 1.6rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-item {
+    padding: 1rem;
+  }
+}
+
+/* Respect users who prefer reduced animation. */
+@media (prefers-reduced-motion: reduce) {
+  .stat-item,
+  .text-input textarea {
+    transition: none;
+  }
+}
