@@ -1,4 +1,3 @@
-
 /* Center the application and limit its width. */
 .app {
   max-width: 900px;
@@ -113,18 +112,40 @@
   color: #667085;
 }
 
-/* Style messages that report word goal progress. */
+
+/* Shared styling for all word-count feedback messages. */
 .word-feedback {
   margin-top: 1.5rem;
   padding: 0.75rem 1rem;
   border-radius: 8px;
-  background-color: #eff6ff;
-  color: #1e40af;
+  border: 1px solid transparent;
 }
 
 .word-feedback p {
   margin: 0;
 }
+
+/* Yellow warning when the minimum word count has not been met. */
+.word-feedback.warning {
+  background-color: #fffbeb;
+  border-color: #fcd34d;
+  color: #92400e;
+}
+
+/* Green success when the word count is within the target range. */
+.word-feedback.success {
+  background-color: #ecfdf5;
+  border-color: #6ee7b7;
+  color: #065f46;
+}
+
+/* Red error when the maximum word count is exceeded. */
+.word-feedback.error {
+  background-color: #fef2f2;
+  border-color: #fca5a5;
+  color: #991b1b;
+}
+
 
 /* Highlight the reading time goal. */
 .reading-goal {

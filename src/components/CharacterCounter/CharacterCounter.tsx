@@ -1,4 +1,3 @@
-
 import { useCallback, useState } from "react";
 import { TextInput } from "../TextInput/TextInput";
 import { StatsDisplay } from "../StatsDisplay/StatsDisplay";
@@ -10,114 +9,128 @@ const WORDS_PER_MINUTE = 200;
 
 // Calculate text statistics from the current input.
 function calculateStats(text: string): TextStats {
-  // Count every character, including spaces and punctuation.
-  const characterCount = text.length;
+    // Count every character, including spaces and punctuation.
+    const characterCount = text.length;
 
-  // Remove surrounding whitespace before counting words.
-  // An empty string should count as zero words.
-  const trimmedText = text.trim();
+    // Remove surrounding whitespace before counting words.
+    // An empty string should count as zero words.
+    const trimmedText = text.trim();
 
-  // Split text at one or more whitespace characters.
-  const wordCount = trimmedText
-    ? trimmedText.split(/\s+/).length
-    : 0;
+    // Split text at one or more whitespace characters.
+    const wordCount = trimmedText
+        ? trimmedText.split(/\s+/).length
+        : 0;
 
-  // Divide the word count by the average reading speed.
-  const readingTime = wordCount / WORDS_PER_MINUTE;
+    // Divide the word count by the average reading speed.
+    const readingTime = wordCount / WORDS_PER_MINUTE;
 
-  return {
-    characterCount,
-    wordCount,
-    readingTime,
-  };
+    return {
+        characterCount,
+        wordCount,
+        readingTime,
+    };
 }
 
 export function CharacterCounter({
-  minWords = 50,
-  maxWords = 500,
-  targetReadingTime = 2,
+    minWords = 50,
+    maxWords = 500,
+    targetReadingTime = 2,
 }: CharacterCounterProps) {
-  // Store the current text entered by the user.
-  const [text, setText] = useState<string>("");
+    // Store the current text entered by the user.
+    const [text, setText] = useState<string>("");
 
-  // Handle text updates sent from the TextInput component.
-  // useCallback preserves the function reference between renders.
-  const handleTextChange = useCallback((newText: string) => {
-    setText(newText);
-  }, []);
+    // Handle text updates sent from the TextInput component.
+    // useCallback preserves the function reference between renders.
+    const handleTextChange = useCallback((newText: string) => {
+        setText(newText);
+    }, []);
 
-  // Recalculate statistics whenever the component renders
-  // using the latest text state.
-  const stats = calculateStats(text);
+    // Recalculate statistics whenever the component renders
+    // using the latest text state.
+    const stats = calculateStats(text);
 
-  // Calculate progress toward the maximum word count.
-  // Prevent division by zero if maxWords is zero.
-  const progress =
-    maxWords > 0
-      ? Math.min((stats.wordCount / maxWords) * 100, 100)
-      : 0;
+    // Calculate progress toward the maximum word count.
+    // Prevent division by zero if maxWords is zero.
+    const progress =
+        maxWords > 0
+            ? Math.min((stats.wordCount / maxWords) * 100, 100)
+            : 0;
 
-  // Determine whether the user has met the word count goals.
-  const belowMinimum = stats.wordCount < minWords;
-  const aboveMaximum = stats.wordCount > maxWords;
+    // Determine whether the user has met the word count goals.
+    const belowMinimum = stats.wordCount < minWords;
+    const aboveMaximum = stats.wordCount > maxWords;
 
-  return (
-    <section className="character-counter">
-      <h1>Character Counter</h1>
-      <p>Track your writing progress in real time.</p>
 
-      {/* Send the callback to the child input component. */}
-      <TextInput
-        onTextChange={handleTextChange}
-        placeholder="Start writing here..."
-      />
+    // Determine which feedback style to display.
+    // The word count can be below, within, or above the target range.
+    const feedbackStatus = belowMinimum
+        ? "warning"
+        : aboveMaximum
+            ? "error"
+            : "success";
 
-      {/* Pass the calculated statistics to the display component. */}
-      <StatsDisplay stats={stats} showReadingTime={true} />
 
-      {/* Display progress toward the maximum word count. */}
-      <div className="word-progress">
-        <label htmlFor="word-progress-bar">
-          Word Count Progress
-        </label>
+    return (
+        <section className="character-counter">
+            <h1>Character Counter</h1>
+            <p>Track your writing progress in real time.</p>
 
-        <progress
-          id="word-progress-bar"
-          value={progress}
-          max={100}
-        />
+            {/* Send the callback to the child input component. */}
+            <TextInput
+                onTextChange={handleTextChange}
+                placeholder="Start writing here..."
+            />
 
-        <p>
-          {stats.wordCount} / {maxWords} words
-        </p>
-      </div>
+            {/* Pass the calculated statistics to the display component. */}
+            <StatsDisplay stats={stats} showReadingTime={true} />
 
-      {/* Give feedback based on the minimum and maximum word limits. */}
-      <div className="word-feedback" aria-live="polite">
-        {belowMinimum && (
-          <p>
-            Keep writing! Your minimum goal is {minWords} words.
-          </p>
-        )}
+            {/* Display progress toward the maximum word count. */}
+            <div className="word-progress">
+                <label htmlFor="word-progress-bar">
+                    Word Count Progress
+                </label>
 
-        {!belowMinimum && !aboveMaximum && (
-          <p>You're within your word count goals!</p>
-        )}
+                <progress
+                    id="word-progress-bar"
+                    value={progress}
+                    max={100}
+                />
 
-        {aboveMaximum && (
-          <p>
-            You've exceeded the maximum of {maxWords} words.
-          </p>
-        )}
-      </div>
+                <p>
+                    {stats.wordCount} / {maxWords} words
+                </p>
+            </div>
 
-      {/* Compare the estimated reading time with the target. */}
-      <p className="reading-goal">
-        Reading time goal: {targetReadingTime} min
-        {stats.readingTime >= targetReadingTime
-          ? " — Goal reached!"
-          : " — Keep writing!"}
-      </p>
-    </section>
-  );
+            {/* Give feedback based on the minimum and maximum word limits. */}
+            {/* Apply a different CSS class based on the word count status. */}
+            <div
+                className={`word-feedback ${feedbackStatus}`}
+                aria-live="polite"
+            >
+                {belowMinimum && (
+                    <p>
+                        Keep writing! Your minimum goal is {minWords} words.
+                    </p>
+                )}
+
+                {!belowMinimum && !aboveMaximum && (
+                    <p>You're within your word count goals!</p>
+                )}
+
+                {aboveMaximum && (
+                    <p>
+                        You've exceeded the maximum of {maxWords} words.
+                    </p>
+                )}
+            </div>
+
+            {/* Compare the estimated reading time with the target. */}
+            <p className="reading-goal">
+                Reading time goal: {targetReadingTime} min
+                {stats.readingTime >= targetReadingTime
+                    ? " — Goal reached!"
+                    : " — Keep writing!"}
+            </p>
+        </section>
+    );
 }

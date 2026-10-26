@@ -1,4 +1,3 @@
-
 import type { StatsDisplayProps } from "../../types";
 
 // This component receives calculated statistics from its parent.
