@@ -1,21 +1,30 @@
-// components/TextInput/TextInput.tsx
-import React from 'react';
-import { TextInputProps } from '../../types';
- 
-export const TextInput: React.FC<TextInputProps> = ({
+
+import type { ChangeEvent } from "react";
+import type { TextInputProps } from "../../types";
+
+export function TextInput({
   onTextChange,
-  placeholder = 'Start typing...',
-  initialValue = ''
-}) => {
+  placeholder = "Start typing...",
+  initialValue = "",
+}: TextInputProps) {
+  // Handle changes whenever the user types.
+  const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    // Send the updated text to the parent component.
+    onTextChange(event.target.value);
+  };
+
   return (
-    <div className="w-full">
+    <div className="text-input">
+      <label htmlFor="text-content">Your Text</label>
+
       <textarea
-        className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        id="text-content"
+        name="text-content"
         placeholder={placeholder}
         defaultValue={initialValue}
-        onChange={(e) => onTextChange(e.target.value)}
-        rows={6}
+        onChange={handleChange}
+        rows={8}
       />
     </div>
   );
-};
+}
